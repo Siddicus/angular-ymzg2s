@@ -5,41 +5,49 @@ sys.setrecursionlimit(1000)
 ############################################################################################################
 """Helper Functions"""
 
-def short_path(arr:[],start:tuple,stop:tuple):    
-    if stop[1]==start[1]:       
+def short_path(arr:[],start:tuple,stop:tuple):
+    
+    """short_path(grid,(0,3),(4,3))->[[(0, 3), (1, 3), (2, 3), (3, 3), (4, 3)],
+    [(0, 3), (0, 4), (1, 4), (2, 4), (3, 4), (4, 4), (4, 3)],
+    [(0, 3), (0, 2), (1, 2), (2, 2), (3, 2), (4, 2), (4, 3)]]"""
+    
+    if stop[1]==start[1]:
+        
         if stop[0]>start[0]: 
             arr9=[]
             arr2 = [(start[0]+i,start[1]) for i in range(stop[0]-start[0]+1)]
             arr9.append(arr2)
+            
             try:               
                 if 0<=start[1]+1<len(arr):                    
                     arr9.append([arr2[0]]+[(i,j+1) for i,j in arr2]+[arr2[-1]])
             except:
                 pass
+            
             try:                
                 if 0<=start[1]-1<len(arr):                    
                     arr9.append([arr2[0]]+[(i,j-1) for i,j in arr2]+[arr2[-1]])
             except:
-                pass
+                pass            
             return arr9
         
         else:
             arr9=[]
             arr2 = [(start[0]-i,start[1]) for i in range(start[0]-stop[0]+1)]
             arr9.append(arr2)
-            try: 
-                
+            
+            try:                
                 if 0<=start[1]+1<len(arr):                    
                     arr9.append([arr2[0]]+[(i,j+1) for i,j in arr2]+[arr2[-1]])
             except:
                 pass
+            
             try: 
                 
                 if 0<=start[1]-1<len(arr):                    
                     arr9.append([arr2[0]]+[(i,j-1) for i,j in arr2]+[arr2[-1]])
             except IndexError:
-                pass
-            
+                pass            
             return arr9
 
     if stop[1]>start[1]:        
@@ -91,6 +99,7 @@ def short_path(arr:[],start:tuple,stop:tuple):
             except:
                 pass
             return arr9
+        
         if stop[0]>start[0]:                            
             arr2 = [(start[0]+i,start[1]) for i in range(stop[0]-start[0]+1)]
             arr3 = [(arr2[-1][0],arr2[-1][1]-i) for i in range(start[1]+1-stop[1])]    
@@ -145,6 +154,7 @@ def destination(tup,target):
         return True
     else:
         return False
+    
 def man_dist(start,stop):
     return abs(start[0]-stop[0])+abs(start[1]-stop[1])
 
@@ -294,7 +304,12 @@ def bool_cord_response(q_list,arr,tup,start,target,tup_pre):
         return good_point_generator(q_list,tup,target,arr,tup_pre)
 #####################################################################################################
 """Path_Post_Prcessing Functions"""
+
 def extra_branch_cut(x):
+    
+    """[(4, 4), (4, 3), (3, 3), (2, 3), (1, 3),(1,2),(1,1), (1, 0), (2, 1), (3, 1), (3, 0), (4, 0)] ->
+    [(4, 4), (4, 3), (3, 3), (2, 3), (1, 3), (1, 2), (1, 1), (2, 1), (3, 1), (3, 0), (4, 0)]"""
+    
     qa = []    
     for i in range(len(x)):
         for j in range(i+2,len(x)):            
