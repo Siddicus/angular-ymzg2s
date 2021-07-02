@@ -1,0 +1,75 @@
+<hello name="{{name}}"></hello>
+<p>
+  Here's a little game for you. In the following grid : <br> 
+  - Black cells are obstacles.<br>
+  - You can walk on all the yellow cells<br>
+  - You need to write an algorithm that gets you from a start cell to a stop cell. 
+<br>
+<br>
+
+For example, how would you reach the cell R:0, C:4 if you started from R: 4, C:0 ?
+</p>
+<div style="width: 90vw; height: 50vh;border:0px solid red; margin-left: 4vw;" >
+  <div *ngFor="let row of matrix; let cIndex=index" [ngStyle]="{'height': 50/matrix.length + 'vh'}" 
+  style="width : 90vw; display: flex;">
+    <div *ngFor="let col of row;let rIndex=index" 
+    [ngStyle]="{'background': (rIndex==matrix.length - 1 && cIndex==0) ? 'green' : (rIndex==0 && cIndex==matrix.length - 1) ? 'orange' : col ? 'black' : 'yellow', 'width': 90/matrix.length + 'vw', 'height': '100%', 'color': col ? 'yellow' : 'black'} " style="border: 1px solid white; display: flex;">
+      <p style="margin: auto">
+       {{(rIndex==4 && cIndex==0) ? 'Stop: ' : ((rIndex==0 && cIndex==4) ? 'Start: ' : '' )}}
+       R: {{cIndex}}, C:{{ rIndex}}
+        </p>
+    </div>
+    </div>
+</div>
+
+<br> 
+<div style='display: flex; flex-direction: row'>
+  <div style="flex:1">
+<b> Input : Grid Matrix, start & stop </b>
+
+<br>
+
+<div *ngFor="let row of matrix;" style="display: flex; margin-top: 5px;">
+  <div *ngFor="let col of row;" style="letter-spacing: 20px;">
+      {{col}}
+  </div>
+</div>
+<br>
+
+in this case, 
+  grid = [
+    [
+      1,0,1,0,0
+    ],
+    [
+      0,0,0,0,1
+    ],
+    [
+      1,0,1,1,0
+    ],
+    [
+      0,0,0,0,0
+    ],
+    [
+      0,1,0,1,0
+    ]
+  ]
+  </div>
+  <div style="flex:1">
+<b> Output : Path planning algorithm </b>
+
+<br>
+ <b style="color: orange"> def </b> <span style="color: blue" > myPathPlanning </span> (grid, start, stop):
+ <span style="color: green"> 
+   <br> """
+   <br> - grid : List of Lists : Row[Col[]]. Possible values : 0 or 1
+   <br> - start : Couple representing start cell coordinates. For example (4,0)
+   <br> - stop : Couple representing stop cell coordinates. For example (0,4)
+ <br>"""
+   </span>
+
+  </div>
+
+</div>
+
+
