@@ -6,7 +6,7 @@
 ## Outline
 In this semi-local approach depicted above, a little description first of the purposes of each of these major functions:
 
-- **Post_Short**: Uses the manhattan distance ignoring the presence of obstacles at first and later extracts single sub-path from the lists of available endpoints. If no such path is found( The list of available choice is null), it calls the *good_point_changer* function to choose the non-local starting point assuming the grid is topologically simply-connected.
+- **Post_Short**: Uses the manhattan distance ignoring the presence of obstacles at first and later extracts a single sub-path from the lists of available endpoints. If no such path is found( The list of available choice is null), it calls the *good_point_changer* function to choose the non-local starting point assuming the grid is topologically simply-connected.
 - **ver_bool_response**: Checks if the optimum movement could be made towards the target and returns a bool response if it's not possible.
 - **bool_cord_response**: Looks for the optimum alternative starting point incase Post_Short encounters an *obstacle*. Incase, no such alternative could be found, it calls *good_point_generator*. 
 - **destination**: Returns a bool response if the destination is reached. It has to be checked at multiple end-points.
@@ -21,7 +21,7 @@ In this semi-local approach depicted above, a little description first of the pu
 ## Explaination Of Flow Chart
 
 -At first the Post_Short is called. It extracts the most optimal sub-path from the available list. Incase it encounters an obstacle-> 
-  - If it is able to continue from the same point(i.e, ver_bool_response is True), Post_Short is called back with the same endpoint that the Post_Short in the previous stage terminated at. If the response if False, bool_cord_response is called.
+    - If it is able to continue from the same point(i.e, ver_bool_response is True), Post_Short is called back with the same endpoint that the Post_Short in the previous stage terminated at. If the response if False, bool_cord_response is called.
 - In case bool_cord_response is able to find the optimal change in the route and if the destination is not reached after implementing that, Post_Short is called again with the new start point that is provided by the bool_cord_response. Incase, it is unable to find any alternative starting points for the Post_Short, Good_point_generator is called and it then provides the Post_short with the newly generated possibly non-local point.
 
 The above process is repeated untill the destination is reached, and later the path_post_processing is done. 
