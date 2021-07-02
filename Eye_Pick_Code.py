@@ -395,6 +395,7 @@ def myPathPlanning(grid,start,target):
     extra_branch_cut(vy)
 ##############################################################################################################
 """Calling the myPathPlanning"""
+l1=[]
 try:
     myPathPlanning(grid,start,target)
     l1 = optimum_path[0]    
@@ -403,6 +404,7 @@ except RecursionError:
 
 optimum_path.clear()
 start,target = target,start
+l2=[]
 try:
     myPathPlanning(grid,start,target)
     l2 = optimum_path[0]    
