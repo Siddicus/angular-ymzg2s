@@ -429,25 +429,4 @@ elif l1:
     print(l1)
 elif l2:
     print(list(reversed(l2)))
-# myPathPlanning(grid,start,target)
-# l1 = optimum_path[0]
-# optimum_path.clear()
-# start,target = target,start
-# myPathPlanning(grid,start,target)
-# l2 = optimum_path[0]
-# lax = [(l1[i],l1[i+1]) for i in range(len(l1)-1) if man_dist(l1[i],l1[i+1])!=1]
-# lax2 = [(l2[i],l2[i+1]) for i in range(len(l2)-1) if man_dist(l2[i],l2[i+1])!=1]
-# if len(lax)==0 and len(lax2)==0:
-#     if len(l1)>=len(l2):
-#         print(l1)
-#     else:
-#         print(list(reversed(l2)))
-# elif len(lax)==0 and len(lax2)!=0:
-#     print(l1)
-# elif len(lax2)==0 and len(lax)!=0:
-#     print(list(reversed(l2)))
-# elif len(lax)<len(lax2):
-#     print(l1)
-# else:
-#     print(list(reversed(l2)))
 ###############################################################################################################
