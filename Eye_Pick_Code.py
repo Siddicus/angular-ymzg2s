@@ -1,118 +1,151 @@
 import itertools
 import sys
-import sys
+import numpy as np
 sys.setrecursionlimit(1000)
 ############################################################################################################
 """Helper Functions"""
 
-def short_path(arr:[],start:tuple,stop:tuple):
-    
-    """short_path(grid,(0,3),(4,3))->[[(0, 3), (1, 3), (2, 3), (3, 3), (4, 3)],
-    [(0, 3), (0, 4), (1, 4), (2, 4), (3, 4), (4, 4), (4, 3)],
-    [(0, 3), (0, 2), (1, 2), (2, 2), (3, 2), (4, 2), (4, 3)]]"""
-    
-    if stop[1]==start[1]:
+def short_path(arr:[],start:tuple,stop:tuple):    
+    if stop[1]==start[1]:      
         
         if stop[0]>start[0]: 
             arr9=[]
             arr2 = [(start[0]+i,start[1]) for i in range(stop[0]-start[0]+1)]
             arr9.append(arr2)
-            
-            try:               
+            try:
+                
                 if 0<=start[1]+1<len(arr):                    
                     arr9.append([arr2[0]]+[(i,j+1) for i,j in arr2]+[arr2[-1]])
             except:
                 pass
-            
-            try:                
+            try:
+                
                 if 0<=start[1]-1<len(arr):                    
                     arr9.append([arr2[0]]+[(i,j-1) for i,j in arr2]+[arr2[-1]])
             except:
-                pass            
+                pass
             return arr9
         
         else:
             arr9=[]
             arr2 = [(start[0]-i,start[1]) for i in range(start[0]-stop[0]+1)]
             arr9.append(arr2)
-            
             try:                
                 if 0<=start[1]+1<len(arr):                    
                     arr9.append([arr2[0]]+[(i,j+1) for i,j in arr2]+[arr2[-1]])
             except:
                 pass
-            
-            try: 
-                
+            try:                 
                 if 0<=start[1]-1<len(arr):                    
                     arr9.append([arr2[0]]+[(i,j-1) for i,j in arr2]+[arr2[-1]])
             except IndexError:
-                pass            
-            return arr9
+                pass
+            
+            return arr9           
 
-    if stop[1]>start[1]:        
+    
+    if stop[1]>start[1]:
+        
         if stop[0]==start[0]: 
             arr9=[]
             arr2 = [(start[0],start[1]+i) for i in range(stop[1]-start[1]+1)]
             arr9.append(arr2)
             try:
                 
-                if 0<=start[0]+1<len(arr[0]):                 
+                if 0<=start[0]+1<len(arr[0]):                    
                     arr9.append([arr2[0]]+[(i+1,j) for i,j in arr2]+[arr2[-1]])
             except:
                 pass
-            try:                
-                if 0<=start[0]-1<len(arr[0]):                                
+            try:
+                
+                if 0<=start[0]-1<len(arr[0]):                               
                     arr9.append([arr2[0]]+[(i-1,j) for i,j in arr2]+[arr2[-1]])
             except:
                 pass
             return arr9
         
-        if stop[0]>start[0]:                            
+        if stop[0]>start[0]:
+            arr9=[]
             arr2 = [(start[0]+i,start[1]) for i in range(stop[0]-start[0]+1)]
             arr3 = [(arr2[-1][0],arr2[-1][1]+i) for i in range(stop[1]-arr2[-1][1]+1)]    
             arr4 = [(start[0],start[1]+i) for i in range(stop[1]-arr2[-1][1]+1)]
             arr5 = [(arr4[-1][0]+i,arr4[-1][1]) for i in range(stop[0]-start[0]+1)]
-            return [arr4+arr5,arr2+arr3]
+            try:                
+                if 0<=start[1]-1<len(arr):                    
+                    arr9.append([arr2[0]]+[(i,j-1) for i,j in arr2]+arr3)
+            except IndexError:
+                pass
+                
+            if arr9:
+                return [arr4+arr5,arr2+arr3,arr9[0]]
+            else:
+                return  [arr4+arr5,arr2+arr3]
             
-        else:                          
+        else:
+            arr9=[]
             arr2 = [(start[0]-i,start[1]) for i in range(start[0]-stop[0]+1)]
             arr3 = [(arr2[-1][0],arr2[-1][1]+i) for i in range(stop[1]-start[1]+1)]
             arr4 = [(start[0],start[1]+i) for i in range(stop[1]-start[1]+1)]
             arr5 = [(arr4[-1][0]-i,arr4[-1][1]) for i in range(start[0]-stop[0]+1)]
-            return [arr4+arr5,arr2+arr3]
+            try:                
+                if 0<=start[1]-1<len(arr):                    
+                    arr9.append([arr2[0]]+[(i,j-1) for i,j in arr2]+arr3)
+            except IndexError:
+                pass
+            if arr9:
+                return [arr4+arr5,arr2+arr3,arr9[0]]
+            else:
+                return  [arr4+arr5,arr2+arr3]
            
-    elif stop[1]<start[1]:
+    elif stop[1]<start[1]:         
         
         if stop[0]==start[0]: 
             arr9=[]
             arr2 = [(start[0],start[1]-i) for i in range(start[1]-stop[1]+1)]
             arr9.append(arr2)
             try: 
-                if 0<=start[0]+1<len(arr[0]):                                    
+                if 0<=start[0]+1<len(arr[0]):                                
                     arr9.append([arr2[0]]+[(i+1,j) for i,j in arr2]+[arr2[-1]])
             except:
                 pass
             try:
-                if 0<=start[0]-1<len(arr[0]):                                 
+                if 0<=start[0]-1<len(arr[0]):                                  
                     arr9.append([arr2[0]]+[(i-1,j) for i,j in arr2]+[arr2[-1]])
             except:
                 pass
             return arr9
-        
-        if stop[0]>start[0]:                            
+        if stop[0]>start[0]:
+            arr9=[]
             arr2 = [(start[0]+i,start[1]) for i in range(stop[0]-start[0]+1)]
             arr3 = [(arr2[-1][0],arr2[-1][1]-i) for i in range(start[1]+1-stop[1])]    
             arr4 = [(start[0],start[1]-i) for i in range(start[1]+1-stop[1])]
             arr5 = [(arr4[-1][0]+i,arr4[-1][1]) for i in range(stop[0]-start[0]+1)]
-            return [arr4+arr5,arr2+arr3]
+            try:                
+                if 0<=start[1]+1<len(arr):                     
+                    arr9.append([arr2[0]]+[(i,j+1) for i,j in arr2]+arr3)
+            except IndexError:
+                pass
+            if arr9:
+                return [arr4+arr5,arr2+arr3,arr9[0]]
+            else:
+                return  [arr4+arr5,arr2+arr3]             
             
-        else:                         
+        else: 
+            arr9=[]
             arr2 = [(start[0]-i,start[1]) for i in range(start[0]-stop[0]+1)]
             arr3 = [(arr2[-1][0],arr2[-1][1]-i) for i in range(start[1]+1-stop[1])]
             arr4 = [(start[0],start[1]-i) for i in range(start[1]+1-stop[1])]
             arr5 = [(arr4[-1][0]-i,arr4[-1][1]) for i in range(start[0]+1-stop[0])]
-            return [arr4+arr5,arr2+arr3]
+            try:                
+                if 0<=start[1]+1<len(arr):                    
+                    arr9.append([arr2[0]]+[(i,j+1) for i,j in arr2]+arr3)
+            except IndexError:
+                pass
+            if arr9:
+                return [arr4+arr5,arr2+arr3,arr9[0]]
+            else:
+                return  [arr4+arr5,arr2+arr3]
+
 
 def ver_bool_response(arr,tup,up,start):    
     if up>0 :
@@ -158,12 +191,33 @@ def destination(tup,target):
 def man_dist(start,stop):
     return abs(start[0]-stop[0])+abs(start[1]-stop[1])
 
+def point_short(q_list,look_up,arr,tup,stop,start):
+    up =stop[1]-tup[1]
+    b = []
+    pat = [(sorted(set(i),key=i.index)) for i in short_path(arr,tup,stop)]
+    for i in pat:
+        j = list(itertools.takewhile(lambda x: look_up[x]==0,i))     
+        b.append(j)
+    b = list(sorted(b,key=lambda d: len(d),reverse=True))[0]
+    
+    if ver_bool_response(arr,b[-1],up,start):        
+        the_path.append(b)        
+        if destination(b[-1],target):
+            return the_path
+        else:
+            return post_short(q_list,look_up,arr,b[-1],target,start)
+    else:        
+        the_path.append(b[:-1])
+        tup_pre = tup
+        return bool_cord_response(q_list,arr,b[-1],start,target,tup_pre)
+    
 def good_point_generator(q_list,bad_point,target,arr,tup_pre):
     k = [val for ind,val in enumerate(q_list) if bad_point in val][0]
     m = {i:man_dist(i,target) for i in k}
     m = list(dict(sorted(m.items(),key = lambda x: x[1])).keys())
-    new_point=[i for i in m if ver_bool_response(arr,i,-1,target)]    
-    return post_short(q_list,look_up,arr,new_point[0],target,start)
+    new_point=[i for i in m if ver_bool_response(arr,i,-1,target)]
+    new_start = changer(arr,tup_pre)    
+    return point_short(q_list,look_up,arr,new_start,new_point[0],start)
   
 def post_short(q_list,look_up,arr,tup,target,start):
     up =target[1]-tup[1]
@@ -226,6 +280,30 @@ def post_short(q_list,look_up,arr,tup,target,start):
         else:
             tup_pre=tup
             return good_point_generator(q_list,tup,target,arr,tup_pre)
+
+def changer(arr,tup):
+    cy = []
+    try:
+        if arr[tup[1]][tup[0]+1]==0:
+            cy.append((tup[0]+1,tup[1]))
+    except:
+        pass
+    try:
+        if arr[tup[1]][tup[0]-1]==0:
+            cy.append((tup[0]-1,tup[1]))
+    except:
+        pass
+    try:
+        if arr[tup[1]+1][tup[0]]==0:
+            cy.append((tup[0],tup[1]+1))
+    except:
+        pass
+    try:
+        if arr[tup[1]-1][tup[0]]==0:
+            cy.append((tup[0],tup[1]-1))
+    except:
+        pass    
+    return cy[0]
 
 def bool_cord_response(q_list,arr,tup,start,target,tup_pre):    
     po = []
@@ -305,72 +383,28 @@ def bool_cord_response(q_list,arr,tup,start,target,tup_pre):
 #####################################################################################################
 """Path_Post_Prcessing Functions"""
 
-def extra_branch_cut(x):
-    
-    """[(4, 4), (4, 3), (3, 3), (2, 3), (1, 3),(1,2),(1,1), (1, 0), (2, 1), (3, 1), (3, 0), (4, 0)] ->
-    [(4, 4), (4, 3), (3, 3), (2, 3), (1, 3), (1, 2), (1, 1), (2, 1), (3, 1), (3, 0), (4, 0)]"""
-    
+def duplicate_consecutive(x):
     qa = []    
-    for i in range(len(x)):
-        for j in range(i+2,len(x)):            
-            if man_dist(x[i],x[j])==1:                
-                qa.append(x[i+1:j])
-    qa = list(itertools.chain.from_iterable(qa))
-    n = [i for i in x if i not in qa]    
-    qq = list(reversed(n))
-    global vt 
-    vt = [qq[0]]    
-    return  path_processing(vt,qq,t=1)
+    for i in range(len(x)-1):            
+        if man_dist(x[i],x[i+1])==0:           
+            qa.append(i)    
+    for i in sorted(qa, reverse=True):
+        del x[i]       
+    return duplicate_non_consecutive(x)
 
-def path_processing(vt,x,t=1):    
-    bad= []    
-    if t == 1:
-        for i in range(len(x)-1):            
-            if man_dist(x[i],x[i+1])==1:                
-                vt.append(x[i+1])
-            else:
-                break
-    else:
-        pass    
-    for i in range(len(x)):
-        if man_dist(vt[-1],x[i])<=t:            
-            vt.append(x[i])
-
-    vt = sorted(set(vt),key = vt.index)     
-    if vt[-1]==x[-1]:
-        try:
-            vouch=list_completion(list(reversed(vt)))      
-            if vouch:                
-                optimum_path.append(vouch)               
-               
-            else:                
-                optimum_path.append(list(reversed(x)))                
-                
-        except IndexError:            
-            optimum_path.append(list(reversed(x)))
-            
-    else:
-        return path_processing(vt,x,t=t+1)
-
-def list_completion(x):    
-    vr = x[:]
+def duplicate_non_consecutive(x):
+    qa = []    
     for i in range(len(x)-1):
-        if man_dist(x[i],x[i+1])==1:
-            pass
-        else:            
-            the_path = []            
-            start=x[i]            
-            target = x[i+1]            
-            post_short(q_list=q_list,look_up=look_up,arr=grid,tup=start,target=target,start=start)  
-            ft=[the_path[0]]
-            for i in range(len(the_path)-1):
-                if ((len(set(the_path[i]).intersection(set(the_path[i+1])))==1 and (the_path[i][-1]==the_path[i+1][0])) or len(set(the_path[i]).intersection(set(the_path[i+1])))==0 or set(the_path[i]).issubset(set(the_path[i+1]))):
-                    ft.append(the_path[i+1])
-            vy = list(itertools.chain.from_iterable(ft))
-            vy = sorted(set(vy),key = vy.index)[1:-1]            
-            for k in vy:
-                vr.insert(i+1,k)            
-            return vr
+        for j in range(i+2,len(x)):
+            if man_dist(x[i],x[j])==0:           
+                qa.append((i,j))    
+    s = []    
+    for i in qa:
+        s.append(np.arange(i[0]+1,i[1]+1))
+    s = list(itertools.chain.from_iterable(s))
+    for i in sorted(s, reverse=True):
+        del x[i]
+    print(x)
 ############################################################################################################
 """The Game Begins!"""
 
@@ -381,11 +415,9 @@ def list_completion(x):
 """Note-> There was some ambiguity if the robot is allowed to move diagonally therefore only the motions across the common edge are allowed in this algorigthm"""
 grid =  [ [ 1,0,1,0,0 ], [ 0,0,0,0,1 ], [ 1,0,1,1,0 ], [ 0,0,0,0,0 ], [ 0,1,0,1,0 ] ]
 global start
-start = (1,0)
+start = (4,2)
 global target
-target = (4,4)
-global optimum_path
-optimum_path = []
+target = (4,0)
 
 """Main calling function as required""" 
 def myPathPlanning(grid,start,target):
@@ -400,50 +432,10 @@ def myPathPlanning(grid,start,target):
     global the_path
     the_path = []
     tup = start
-    post_short(q_list=q_list,look_up=look_up,arr=grid,tup=start,target=target,start=start)    
-    ft = [the_path[0]]    
-    for i in range(len(the_path)-1):
-        if ((len(set(the_path[i]).intersection(set(the_path[i+1])))==1 and (the_path[i][-1]==the_path[i+1][0])) or len(set(the_path[i]).intersection(set(the_path[i+1])))==0 or set(the_path[i]).issubset(set(the_path[i+1]))):
-            ft.append(the_path[i+1])
-    vy = list(itertools.chain.from_iterable(ft))
-    vy = sorted(set(vy),key = vy.index)
-    extra_branch_cut(vy)
+    post_short(q_list=q_list,look_up=look_up,arr=grid,tup=start,target=target,start=start)
+    vy = list(itertools.chain.from_iterable(the_path))
+    duplicate_consecutive(vy)
 ##############################################################################################################
 """Calling the myPathPlanning"""
-l1=[]
-try:
-    myPathPlanning(grid,start,target)
-    l1 = optimum_path[0]    
-except RecursionError:
-    pass
-
-optimum_path.clear()
-start,target = target,start
-l2=[]
-try:
-    myPathPlanning(grid,start,target)
-    l2 = optimum_path[0]    
-except RecursionError:
-    pass
-
-if l1 and l2:
-    lax = [(l1[i],l1[i+1]) for i in range(len(l1)-1) if man_dist(l1[i],l1[i+1])!=1]
-    lax2 = [(l2[i],l2[i+1]) for i in range(len(l2)-1) if man_dist(l2[i],l2[i+1])!=1]
-    if len(lax)==0 and len(lax2)==0:
-        if len(l1)>=len(l2):
-            print(l1)
-        else:
-            print(list(reversed(l2)))
-    elif len(lax)==0 and len(lax2)!=0:
-        print(l1)
-    elif len(lax2)==0 and len(lax)!=0:
-        print(list(reversed(l2)))
-    elif len(lax)<len(lax2):
-        print(l1)
-    else:
-        print(list(reversed(l2)))        
-elif l1:
-    print(l1)
-elif l2:
-    print(list(reversed(l2)))
+myPathPlanning(grid,start,target)
 ###############################################################################################################
